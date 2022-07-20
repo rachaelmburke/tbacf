@@ -88,7 +88,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 
   <!--radix_placeholder_meta_tags-->
-  <title>tbacf: Analysis</title>
+  <title>tbacf: C Analysis</title>
   
   <meta property="description" itemprop="description" content="Code to analyse data and determine number (CI) TB notifications in interrupted time series analysis/es."/>
   
@@ -99,7 +99,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <meta name="article:author" content="Rachael Burke and Pete Dodd"/>
   
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="tbacf: Analysis"/>
+  <meta property="og:title" content="tbacf: C Analysis"/>
   <meta property="og:type" content="article"/>
   <meta property="og:description" content="Code to analyse data and determine number (CI) TB notifications in interrupted time series analysis/es."/>
   <meta property="og:locale" content="en_US"/>
@@ -107,14 +107,14 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="tbacf: Analysis"/>
+  <meta property="twitter:title" content="tbacf: C Analysis"/>
   <meta property="twitter:description" content="Code to analyse data and determine number (CI) TB notifications in interrupted time series analysis/es."/>
   
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Analysis"]},{"type":"character","attributes":{},"value":["Code to analyse data and determine number (CI) TB notifications in interrupted time series analysis/es.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Rachael Burke and Pete Dodd"]}]}]},{"type":"character","attributes":{},"value":["2022-07-20"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[2]}]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["C Analysis"]},{"type":"character","attributes":{},"value":["Code to analyse data and determine number (CI) TB notifications in interrupted time series analysis/es.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Rachael Burke and Pete Dodd"]}]}]},{"type":"character","attributes":{},"value":["2022-07-20"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["toc","toc_depth"]}},"value":[{"type":"logical","attributes":{},"value":[true]},{"type":"integer","attributes":{},"value":[2]}]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -2098,7 +2098,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Analysis","description":"Code to analyse data and determine number (CI) TB notifications in interrupted time series analysis/es.","authors":[{"author":"Rachael Burke and Pete Dodd","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-07-20T00:00:00.000+01:00","citationText":"Dodd, 2022"}
+{"title":"C Analysis","description":"Code to analyse data and determine number (CI) TB notifications in interrupted time series analysis/es.","authors":[{"author":"Rachael Burke and Pete Dodd","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-07-20T00:00:00.000+01:00","citationText":"Dodd, 2022"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2107,10 +2107,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <nav class="distill-site-nav distill-site-header">
 <div class="nav-left">
 <a href="index.html" class="title">tbacf</a>
-<a href="a_setup.html">Set Up</a>
-<a href="a_tableandfig.html">A Tables and Figures</a>
-<a href="Analysis.html">Analysis</a>
-<a href="b_tableandfig.html">B Tables and Figures</a>
+<a href="a_setup.html">A Set Up</a>
+<a href="a_tableandfig.html">B Tables and Figures (1)</a>
+<a href="Analysis.html">C Analysis</a>
+<a href="b_tableandfig.html">D Tables and Figures (2)</a>
 </div>
 <div class="nav-right">
 <a href="index.html">Home</a>
@@ -2124,7 +2124,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>Analysis</h1>
+<h1>C Analysis</h1>
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
 <p><p>Code to analyse data and determine number (CI) TB notifications in interrupted time series analysis/es.</p></p>
@@ -2962,10 +2962,15 @@ Number of Fisher Scoring iterations: 4</code></pre>
 7 woc   observed    allf         3213      673 1615 (1245 t… 337 (261…
 8 woc   cfact (woc) allf         1598      335 1615 (1245 t… 337 (261…</code></pre>
 </div>
-<p>And save the results so that can make a well formatted table in next step.</p>
+<p>And save the results so that can make a well formatted table in next step. Also save the models to use to draw Fig 3.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>result</span>, file<span class='op'>=</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"data"</span>,<span class='st'>"results_summary.rds"</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>mod.woc</span>, file<span class='op'>=</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"data"</span>,<span class='st'>"mod.woc.rds"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>mod.woc.allf</span>, file<span class='op'>=</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"data"</span>,<span class='st'>"mod.woc.allf.rds"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>mod.wc</span>, file<span class='op'>=</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"data"</span>,<span class='st'>"mod.wc.rds"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>mod.wc.allf</span>, file<span class='op'>=</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"data"</span>,<span class='st'>"mod.wc.allf.rds"</span><span class='op'>)</span><span class='op'>)</span>
 </code></pre>
 </div>
 </div>

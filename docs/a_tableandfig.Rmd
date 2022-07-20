@@ -1,5 +1,5 @@
 ---
-title: "A Tables and Figures"
+title: "B Tables and Figures (1)"
 description: |
   Code to create tables and figures from our paper.
 author:

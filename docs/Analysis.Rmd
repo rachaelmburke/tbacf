@@ -1,5 +1,5 @@
 ---
-title: "Analysis"
+title: "C Analysis"
 description: |
   Code to analyse data and determine number (CI) TB notifications in interrupted time series analysis/es.
 author:
@@ -15,7 +15,7 @@ This is the code we used for implementing the analysis.  Appendix XX in our pape
 
 This is in a mixture of tidverse and baseR (data.table); reflecting our collaboration!.
 
-smp_c = bacteriologically confirmed at the clinic at time of starting TB treatment ["smp" = smear pos, but NB. misleading abbreviation as many Bac+ are Xpert pos]
+smp_c = bacteriologically confirmed at the clinic at time of starting TB treatment ["smp" = smear pos, but NB. misleading abbreviation as many Bac+ are Xpert pos]  
 all_f = all form TB
 
 ```{r, warning=F}
@@ -657,9 +657,13 @@ result <- wc %>% rbind(woc)
 result
 ```
 
-And save the results so that can make a well formatted table in next step.
+And save the results so that can make a well formatted table in next step.  Also save the models to use to draw Fig 3.
 
 ```{r}
 saveRDS(result, file=here("data","results_summary.rds"))
 
+saveRDS(mod.woc, file=here("data","mod.woc.rds"))
+saveRDS(mod.woc.allf, file=here("data","mod.woc.allf.rds"))
+saveRDS(mod.wc, file=here("data","mod.wc.rds"))
+saveRDS(mod.wc.allf, file=here("data","mod.wc.allf.rds"))
 ```
