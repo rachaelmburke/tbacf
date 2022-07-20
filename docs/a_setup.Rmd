@@ -8,9 +8,12 @@ date: "`r Sys.Date()`"
 output: distill::distill_article
 ---
 
+
 This document takes data and merges / sets it up the way we need it for the analysis.  Most of the data is already on github at Dr MacPherson's repo and package "mlwdata" (XXXXX).
 
-We load most data from mlwdata, but there is an extra spreadsheet with some additional lab data that we read in from "data" folder in this (tbacf) repo.
+We load most data from mlwdata, but there is an extra spreadsheet with some additional lab data that we read in from "data_sharing" folder in this (tbacf) repo.
+
+Note that the end of this code puts .rds files in a "data" folder.  "Data" is not included in this repo (but can be recreated locally through running this markdown file and using data from "mlwdata" and "extra_data" which is in this repo). Note that "here" in my version is actually heading one file division up (into the "main" repo and not "docs", where this .Rmd is saved).  You may need to fix the relative file paths to the "extra data" spreadsheet to make this work for you.
 
 ### Load libraries, read in data and define some timepoints / labels
 
@@ -48,26 +51,24 @@ pop <- mlwdata::acf_cnrs_overall %>%
   dplyr::select(yq, yq_num, acfarea, population)
 
 # This is some additional data from TB lab and x01 form
-extra_info <- read_rds(here("data_raw","extra_info.rds")) %>%  
-  mutate(yq=yq(quarter(x05regdate, with_year=TRUE))) %>% 
-  filter(yq!=ymd("0201-01-01"), yq!=ymd("2011-01-01"),yq!=ymd("2201-01-01")) 
+extra_info <- readRDS(here("data_raw","extra_info.rds"))
 ```
 
 ### Define some functions
 
-```{r, tidy=TRUE, tidy.opts=list(width.cutoff=60)}
+```{r}
 # This is function to add in population denominators, group cases and recreate useful columns (will work on whole long dataset, or subsections of it)
 add_denoms <- function(df){
   df %>%
   group_by(yq) %>%
-  mutate(yq_num=cur_group_id()-1) %>% # yq_num this is number of quarter years passed since January 2009 and is used for statistical modelling.
-  left_join(pop, by=c("yq", "yq_num", "acfarea")) %>%
-  mutate(cnr= (n/population) * 100000 * 4) %>%
-  mutate(yq_mid = yq + days(45)) %>%
-  mutate(acftime=case_when(yq_mid>acf_start_date & yq_mid<acf_end_date ~ "acf",
+    mutate(yq_num=cur_group_id()-1) %>% # yq num this is number of quarter years passed since January 2009 and is used for statistical modelling.
+    left_join(pop, by=c("yq", "yq_num", "acfarea")) %>%
+    mutate(cnr= (n/population) * 100000 * 4) %>%
+    mutate(yq_mid = yq + days(45)) %>%
+    mutate(acftime=case_when(yq_mid>acf_start_date & yq_mid<acf_end_date ~ "acf",
                            yq_mid<acf_start_date ~ "pre-acf",
                            yq_mid>acf_end_date ~ "post-acf")) %>%
-  mutate(acftime=factor(acftime, levels=c("pre-acf", "acf", "post-acf")))
+    mutate(acftime=factor(acftime, levels=c("pre-acf", "acf", "post-acf")))
 }
 ```
 
@@ -78,27 +79,22 @@ Including adding in the "extra data" form lab that wasn't in PM's spreadsheet.  
 
 ```{r}
 # This adds the lab information (and the people who were diagnosed directly through ACF vs. indirectly)
-tb_2011_2018 <- 
-  cases_l %>% 
+tb_2011_2018 <- cases_l %>% 
   mutate(yq=yq(year_q)) %>%
   left_join(extra_info) %>% # the people not from Blantyre City *don't* get merged here as "left join" rather than full join.
   mutate(cult_lab=case_when(
-  (l30cultures=="Pos" | l30cultures=="Scanty") & l32id=="MTB" ~ "Culture confirmed"
-)) %>% 
+  (l30cultures=="Pos" | l30cultures=="Scanty") & l32id=="MTB" ~ "Culture confirmed")) %>% 
   mutate(diagnosed=case_when(
     new_mode==3 ~ "e) Direct ACF",
     smr_clinic=="b) Smear-positive" ~ "d) Smr clinic",
     xpert_clinic=="b) Xpert-positive" ~ "c) Xpert clinic",
     cult_lab=="Culture confirmed" ~ "b) Smr/cult TB lab",
-    T ~ "a) Clinically dx"
-  )) %>% 
-  mutate(diagnosed=factor(diagnosed, levels=diag_fct)) %>%
+    T ~ "a) Clinically dx")) %>% 
   mutate(facility = case_when(
     fac_code %in% c("BTQE") ~ "a) Central hospital",
     fac_code  %in% c("BTBG","BTCH","BTLB","BTND","BTSL","BTZG","BTGW")  ~ "b) Health centre",
     fac_code %in% c("BTBAH", "BTCH", "BTMB", "BTMW") ~ "c) Private health facility",
-    T ~ "d) Not recorded"
-  )) %>%
+    T ~ "d) Not recorded")) %>%
   mutate(hiv=case_when(is.na(hiv) ~ "c) Not recorded", T ~ hiv)) %>%
   mutate(art=case_when(hiv=="b) HIV-positive" & is.na(art)==F ~ art,  
                        hiv=="b) HIV-positive" & is.na(art) ~ "c) Not recorded", # why does no-one have a missing ART status?
