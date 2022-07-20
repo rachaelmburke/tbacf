@@ -1,18 +1,14 @@
 ---
-title: "tbacf"
+title: "TB ACF"
 description: |
-  Welcome to the website. I hope you enjoy it!
+  A website to share code and data from our paper about effects of ACF on TB notications in Blantyre
 site: distill::distill_website
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-
-# Learn more about creating websites with Distill at:
-# https://rstudio.github.io/distill/website.html
-
-# Learn more about publishing to GitHub Pages at:
-# https://rstudio.github.io/distill/publish_website.html#github-pages
 
 ```
 
+This website is to accompany the paper XXXXX.
+
+The github repo is at https://github.com/rachaelmburke/tbacf

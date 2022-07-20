@@ -8,5 +8,13 @@ navbar:
     - text: "Home"
       href: index.html
     - text: "About"
-      href: about.html
+      href: about.html 
+  left:
+    - text: "Set Up"
+      href: Set Up.html
+    - text: "Analysis"
+      href: Analysis.html
+    - text: "Tables and Figures"
+      href: tableandfig.html
+      
 output: distill::distill_article

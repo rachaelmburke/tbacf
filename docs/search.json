@@ -6,15 +6,43 @@
       "description": "Some additional details about the website",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2022-07-20T12:43:24+01:00"
+      "last_modified": "2022-07-20T12:54:37+01:00"
+    },
+    {
+      "path": "Analysis.html",
+      "title": "Analysis",
+      "description": "Code to analyse data and determine number (CI) TB notifications in interrupted time series analysis/es.\n",
+      "author": [
+        {
+          "name": "Rachael Burke and Pete Dodd",
+          "url": {}
+        }
+      ],
+      "date": "`r Sys.Date()`",
+      "contents": "\n\n\n\n",
+      "last_modified": "2022-07-20T12:54:37+01:00"
     },
     {
       "path": "index.html",
-      "title": "tbacf",
-      "description": "Welcome to the website. I hope you enjoy it!\n",
+      "title": "TB ACF",
+      "description": "A website to share code and data from our paper about effects of ACF on TB notications in Blantyre\n",
       "author": [],
-      "contents": "\n\n\n\n",
-      "last_modified": "2022-07-20T12:43:24+01:00"
+      "contents": "\nThis website is to accompany the paper XXXXX.\nThe github repo is at https://github.com/rachaelmburke/tbacf\n\n\n\n",
+      "last_modified": "2022-07-20T12:54:38+01:00"
+    },
+    {
+      "path": "tableandfig.html",
+      "title": "Tables and Figures",
+      "description": "Code to create tables and figures from our paper.\n",
+      "author": [
+        {
+          "name": "Rachael Burke",
+          "url": {}
+        }
+      ],
+      "date": "`r Sys.Date()`",
+      "contents": "\nDistill is a publication format for scientific and technical writing, native to the web.\nLearn more about using Distill for R Markdown at https://rstudio.github.io/distill.\n\n\n\n",
+      "last_modified": "2022-07-20T12:54:39+01:00"
     }
   ],
   "collections": []
