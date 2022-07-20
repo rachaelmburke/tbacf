@@ -1,0 +1,14 @@
+---
+title: "Setting up data"
+description: |
+  Code to set up data for analyses
+author:
+  - name: Rachael Burke
+
+date: "`r Sys.Date()`"
+output: distill::distill_article
+---
+
+
+
+

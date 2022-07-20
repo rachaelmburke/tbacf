@@ -11,7 +11,7 @@ navbar:
       href: about.html 
   left:
     - text: "Set Up"
-      href: Set Up.html
+      href: setup.html
     - text: "Analysis"
       href: Analysis.html
     - text: "Tables and Figures"
