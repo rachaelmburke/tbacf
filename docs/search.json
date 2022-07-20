@@ -6,7 +6,7 @@
       "description": "Some additional details about the website",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2022-07-20T13:01:04+01:00"
+      "last_modified": "2022-07-20T13:13:14+01:00"
     },
     {
       "path": "Analysis.html",
@@ -20,7 +20,7 @@
       ],
       "date": "`r Sys.Date()`",
       "contents": "\n\n\n\n",
-      "last_modified": "2022-07-20T13:01:05+01:00"
+      "last_modified": "2022-07-20T13:13:14+01:00"
     },
     {
       "path": "index.html",
@@ -28,7 +28,7 @@
       "description": "A website to share code and data from our paper about effects of ACF on TB notications in Blantyre\n",
       "author": [],
       "contents": "\nThis website is to accompany the paper XXXXX.\nThe github repo is at https://github.com/rachaelmburke/tbacf\n\n\n\n",
-      "last_modified": "2022-07-20T13:01:05+01:00"
+      "last_modified": "2022-07-20T13:13:15+01:00"
     },
     {
       "path": "setup.html",
@@ -42,7 +42,7 @@
       ],
       "date": "`r Sys.Date()`",
       "contents": "\n\n\n\n",
-      "last_modified": "2022-07-20T13:01:06+01:00"
+      "last_modified": "2022-07-20T13:13:15+01:00"
     },
     {
       "path": "tableandfig.html",
@@ -56,7 +56,7 @@
       ],
       "date": "`r Sys.Date()`",
       "contents": "\nDistill is a publication format for scientific and technical writing, native to the web.\nLearn more about using Distill for R Markdown at https://rstudio.github.io/distill.\n\n\n\n",
-      "last_modified": "2022-07-20T13:01:06+01:00"
+      "last_modified": "2022-07-20T13:13:16+01:00"
     }
   ],
   "collections": []
