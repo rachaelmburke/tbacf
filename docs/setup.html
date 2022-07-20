@@ -50,16 +50,17 @@ pre.numberSource code > span > a:first-child::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {   }
+  { color: #00769e; background-color: #f1f3f5; }
 @media screen {
 code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
+code span. { color: #00769e; } /* Normal */
 code span.al { color: #ad0000; } /* Alert */
 code span.an { color: #5e5e5e; } /* Annotation */
-code span.at { color: #20794d; } /* Attribute */
+code span.at { color: #657422; } /* Attribute */
 code span.bn { color: #ad0000; } /* BaseN */
 code span.bu { } /* BuiltIn */
-code span.cf { color: #007ba5; } /* ControlFlow */
+code span.cf { color: #00769e; } /* ControlFlow */
 code span.ch { color: #20794d; } /* Char */
 code span.cn { color: #8f5902; } /* Constant */
 code span.co { color: #5e5e5e; } /* Comment */
@@ -73,11 +74,11 @@ code span.fl { color: #ad0000; } /* Float */
 code span.fu { color: #4758ab; } /* Function */
 code span.im { } /* Import */
 code span.in { color: #5e5e5e; } /* Information */
-code span.kw { color: #007ba5; } /* Keyword */
+code span.kw { color: #00769e; } /* Keyword */
 code span.op { color: #5e5e5e; } /* Operator */
-code span.ot { color: #007ba5; } /* Other */
+code span.ot { color: #00769e; } /* Other */
 code span.pp { color: #ad0000; } /* Preprocessor */
-code span.sc { color: #20794d; } /* SpecialChar */
+code span.sc { color: #5e5e5e; } /* SpecialChar */
 code span.ss { color: #20794d; } /* SpecialString */
 code span.st { color: #20794d; } /* String */
 code span.va { color: #111111; } /* Variable */
@@ -85,10 +86,11 @@ code span.vs { color: #20794d; } /* VerbatimString */
 code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </style>
 
+
   <!--radix_placeholder_meta_tags-->
-  <title>tbacf: Setting up data</title>
+  <title>tbacf: Set up</title>
   
-  <meta property="description" itemprop="description" content="Code to set up data for analyses"/>
+  <meta property="description" itemprop="description" content="Getting data into correct format"/>
   
   
   <!--  https://schema.org/Article -->
@@ -97,22 +99,22 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <meta name="article:author" content="Rachael Burke"/>
   
   <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
-  <meta property="og:title" content="tbacf: Setting up data"/>
+  <meta property="og:title" content="tbacf: Set up"/>
   <meta property="og:type" content="article"/>
-  <meta property="og:description" content="Code to set up data for analyses"/>
+  <meta property="og:description" content="Getting data into correct format"/>
   <meta property="og:locale" content="en_US"/>
   <meta property="og:site_name" content="tbacf"/>
   
   <!--  https://dev.twitter.com/cards/types/summary -->
   <meta property="twitter:card" content="summary"/>
-  <meta property="twitter:title" content="tbacf: Setting up data"/>
-  <meta property="twitter:description" content="Code to set up data for analyses"/>
+  <meta property="twitter:title" content="tbacf: Set up"/>
+  <meta property="twitter:description" content="Getting data into correct format"/>
   
   <!--/radix_placeholder_meta_tags-->
   <!--radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Setting up data"]},{"type":"character","attributes":{},"value":["Code to set up data for analyses\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Rachael Burke"]}]}]},{"type":"character","attributes":{},"value":["2022-07-20"]},{"type":"character","attributes":{},"value":["distill::distill_article"]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["Set up"]},{"type":"character","attributes":{},"value":["Getting data into correct format\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name"]}},"value":[{"type":"character","attributes":{},"value":["Rachael Burke"]}]}]},{"type":"character","attributes":{},"value":["2022-07-20"]},{"type":"character","attributes":{},"value":["distill::distill_article"]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   <!--radix_placeholder_navigation_in_header-->
@@ -459,7 +461,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   
   </style>
   
-  <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+  <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
   <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
   <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
   <script src="site_libs/headroom-0.9.4/headroom.min.js"></script>
@@ -1031,10 +1033,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     position: relative;
     margin-bottom: 2.5em;
     margin-top: 1.5em;
-  }
-  
-  .figure img {
-    width: 100%;
   }
   
   .figure .caption {
@@ -1866,7 +1864,16 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   
       // hoverable references
       $('span.citation[data-cites]').each(function() {
-        var refHtml = $('#ref-' + $(this).attr('data-cites')).html();
+        if ($(this).children()[0].nodeName == "D-FOOTNOTE") {
+          var fn = $(this).children()[0]
+          $(this).html(fn.shadowRoot.querySelector("sup"))
+          $(this).id = fn.id
+          fn.remove()
+        }
+        var refs = $(this).attr('data-cites').split(" ");
+        var refHtml = refs.map(function(ref) {
+          return "<p>" + $('#ref-' + ref).html() + "</p>";
+        }).join("\n");
         window.tippy(this, {
           allowHTML: true,
           content: refHtml,
@@ -1877,6 +1884,31 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
           placement: 'bottom-start'
         });
       });
+  
+      // fix footnotes in tables (#411)
+      // replacing broken distill.pub feature
+      $('table d-footnote').each(function() {
+        // we replace internal showAtNode methode which is triggered when hovering a footnote
+        this.hoverBox.showAtNode = function(node) {
+          // ported from https://github.com/distillpub/template/pull/105/files
+          calcOffset = function(elem) {
+              let x = elem.offsetLeft;
+              let y = elem.offsetTop;
+              // Traverse upwards until an `absolute` element is found or `elem`
+              // becomes null.
+              while (elem = elem.offsetParent && elem.style.position != 'absolute') {
+                  x += elem.offsetLeft;
+                  y += elem.offsetTop;
+              }
+  
+              return { left: x, top: y };
+          }
+          // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetTop
+          const bbox = node.getBoundingClientRect();
+          const offset = calcOffset(node);
+          this.show([offset.left + bbox.width, offset.top + bbox.height]);
+        }
+      })
   
       // clear polling timer
       clearInterval(tid);
@@ -1976,6 +2008,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     // mark non-body figures created by knitr chunks as 100% width
     $('.layout-chunk').each(function(i, val) {
       var figures = $(this).find('img, .html-widget');
+      // ignore leaflet img layers (#106)
+      figures = figures.filter(':not(img[class*="leaflet"])')
       if ($(this).attr('data-layout') !== "l-body") {
         figures.css('width', '100%');
       } else {
@@ -1998,7 +2032,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     // get rid of index.html references in header
     if (window.location.protocol !== "file:") {
       $('.distill-site-header a[href]').each(function(i,val) {
-        $(this).attr('href', $(this).attr('href').replace("index.html", "./"));
+        $(this).attr('href', $(this).attr('href').replace(/^index[.]html/, "./"));
       });
     }
   
@@ -2046,8 +2080,16 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <script src="site_libs/webcomponents-2.0.0/webcomponents.js"></script>
   <script src="site_libs/distill-2.2.21/template.v2.js"></script>
   <!--radix_placeholder_site_in_header-->
+  <style type="text/css">
+  /* --------------Navbar-------------------- */
+  
+  .distill-site-header{ 
+    background-color: #0F52BA;
+  }
+  </style>
   <!--/radix_placeholder_site_in_header-->
 
+  <link rel="stylesheet" href="styles.css" type="text/css"/>
 
 </head>
 
@@ -2056,7 +2098,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"Setting up data","description":"Code to set up data for analyses","authors":[{"author":"Rachael Burke","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-07-20T00:00:00.000+00:00","citationText":"Burke, 2022"}
+{"title":"Set up","description":"Getting data into correct format","authors":[{"author":"Rachael Burke","authorURL":"#","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-07-20T00:00:00.000+01:00","citationText":"Burke, 2022"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2081,10 +2123,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <!--/radix_placeholder_site_before_body-->
 
 <div class="d-title">
-<h1>Setting up data</h1>
+<h1>Set up</h1>
 <!--radix_placeholder_categories-->
 <!--/radix_placeholder_categories-->
-<p><p>Code to set up data for analyses</p></p>
+<p><p>Getting data into correct format</p></p>
 </div>
 
 <div class="d-byline">
@@ -2094,7 +2136,186 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<p>This document takes data and merges / sets it up the way we need it for the analysis. Most of the data is already on github at Dr MacPherson’s repo and package “mlwdata” (XXXXX).</p>
+<p>We load most data from mlwdata, but there is an extra spreadsheet with some additional lab data that we read in from “data” folder in this (tbacf) repo.</p>
+<h3 id="load-libraries-read-in-data-and-define-some-timepoints-labels">Load libraries, read in data and define some timepoints / labels</h3>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Important libraries</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span>
+<span class='co'># library(devtools) # needed if you don't already have 'mlwdata' installed</span>
+<span class='co'># install.github("petermacp/mlwdata")</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'>mlwdata</span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://lubridate.tidyverse.org'>lubridate</a></span><span class='op'>)</span>
+
+<span class='co'># libraries needed in this code / to control aesthetics / preference that you could do without</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/yihui/formatR'>formatR</a></span><span class='op'>)</span> <span class='co'># to wrap text in this markdown</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://here.r-lib.org/'>here</a></span><span class='op'>)</span>
+
+<span class='va'>acf_start_date</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://lubridate.tidyverse.org/reference/ymd.html'>dmy</a></span><span class='op'>(</span><span class='st'>"01 April 2011"</span><span class='op'>)</span> 
+<span class='va'>acf_end_date</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://lubridate.tidyverse.org/reference/ymd.html'>dmy</a></span><span class='op'>(</span><span class='st'>"01 Oct 2014"</span><span class='op'>)</span>
+
+<span class='va'>diag_fct</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"a) Clinically dx"</span>, <span class='st'>"b) Smr/cult TB lab"</span>, <span class='st'>"c) Xpert clinic"</span>, <span class='st'>"d) Smr clinic"</span>, <span class='st'>"e) Direct ACF"</span><span class='op'>)</span> <span class='co'># factor levels for how TB was diagnosed</span>
+<span class='va'>age_levels</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"0-14"</span>,<span class='st'>"15-24"</span>,<span class='st'>"25-34"</span>,<span class='st'>"35-44"</span>,<span class='st'>"45-54"</span>,<span class='st'>"55-64"</span>,<span class='st'>"65+"</span><span class='op'>)</span>
+
+<span class='co'># This is the main data used in this analysis</span>
+<span class='va'>cases_g</span> <span class='op'>&lt;-</span> <span class='fu'>mlwdata</span><span class='fu'>::</span><span class='va'>blantyre_tb_cases_2009_2018</span> <span class='co'># this is grouped data, very sparse.  Contains pre-ACF data (2009-2010)</span>
+<span class='va'>cases_l</span> <span class='op'>&lt;-</span> <span class='fu'>mlwdata</span><span class='fu'>::</span><span class='va'>tb_cases_2011_2018</span> <span class='co'># this is long data from post ACF starting (2011-); this has more detail on each person with TB</span>
+
+<span class='co'># this is a dataset that contains CNR quarterly; but also contains population denominator </span>
+<span class='co'># for ACF and non-ACF areas for adults 15+.  </span>
+<span class='co'># See documentation on PM's github, population denominators come from intrapolation from GoM census' (which were in 2008 and 2018).</span>
+<span class='va'>pop</span> <span class='op'>&lt;-</span> <span class='fu'>mlwdata</span><span class='fu'>::</span><span class='va'>acf_cnrs_overall</span> <span class='op'>%&gt;%</span>  
+  <span class='fu'>mutate</span><span class='op'>(</span>yq<span class='op'>=</span><span class='fu'><a href='https://lubridate.tidyverse.org/reference/ymd.html'>yq</a></span><span class='op'>(</span><span class='va'>year_q</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>mutate</span><span class='op'>(</span>acfarea<span class='op'>=</span><span class='fu'>case_when</span><span class='op'>(</span><span class='va'>acf</span><span class='op'>==</span><span class='st'>"ACF"</span> <span class='op'>~</span> <span class='st'>"b) ACF"</span>,
+                           <span class='va'>acf</span><span class='op'>==</span><span class='st'>"Non-ACF"</span> <span class='op'>~</span> <span class='st'>"a) Non-ACF"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>yq</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>yq_num<span class='op'>=</span><span class='fu'>cur_group_id</span><span class='op'>(</span><span class='op'>)</span><span class='op'>-</span><span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='co'># this is the number of quarters elapsed since Q1.2009</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>yq</span>, <span class='va'>yq_num</span>, <span class='va'>acfarea</span>, <span class='va'>population</span><span class='op'>)</span>
+
+<span class='co'># This is some additional data from TB lab and x01 form</span>
+<span class='va'>extra_info</span> <span class='op'>&lt;-</span> <span class='fu'>read_rds</span><span class='op'>(</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"data_raw"</span>,<span class='st'>"extra_info.rds"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>  
+  <span class='fu'>mutate</span><span class='op'>(</span>yq<span class='op'>=</span><span class='fu'><a href='https://lubridate.tidyverse.org/reference/ymd.html'>yq</a></span><span class='op'>(</span><span class='fu'><a href='https://lubridate.tidyverse.org/reference/quarter.html'>quarter</a></span><span class='op'>(</span><span class='va'>x05regdate</span>, with_year<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>yq</span><span class='op'>!=</span><span class='fu'><a href='https://lubridate.tidyverse.org/reference/ymd.html'>ymd</a></span><span class='op'>(</span><span class='st'>"0201-01-01"</span><span class='op'>)</span>, <span class='va'>yq</span><span class='op'>!=</span><span class='fu'><a href='https://lubridate.tidyverse.org/reference/ymd.html'>ymd</a></span><span class='op'>(</span><span class='st'>"2011-01-01"</span><span class='op'>)</span>,<span class='va'>yq</span><span class='op'>!=</span><span class='fu'><a href='https://lubridate.tidyverse.org/reference/ymd.html'>ymd</a></span><span class='op'>(</span><span class='st'>"2201-01-01"</span><span class='op'>)</span><span class='op'>)</span> 
+</code></pre>
+</div>
+</div>
+<h3 id="define-some-functions">Define some functions</h3>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># This is function to add in population denominators, group cases and recreate useful columns (will work on whole long dataset, or subsections of it)</span>
+<span class='va'>add_denoms</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>df</span><span class='op'>)</span><span class='op'>{</span>
+  <span class='va'>df</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>yq</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>yq_num<span class='op'>=</span><span class='fu'>cur_group_id</span><span class='op'>(</span><span class='op'>)</span><span class='op'>-</span><span class='fl'>1</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='co'># yq_num this is number of quarter years passed since January 2009 and is used for statistical modelling.</span>
+  <span class='fu'>left_join</span><span class='op'>(</span><span class='va'>pop</span>, by<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"yq"</span>, <span class='st'>"yq_num"</span>, <span class='st'>"acfarea"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>cnr<span class='op'>=</span> <span class='op'>(</span><span class='va'>n</span><span class='op'>/</span><span class='va'>population</span><span class='op'>)</span> <span class='op'>*</span> <span class='fl'>100000</span> <span class='op'>*</span> <span class='fl'>4</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>yq_mid <span class='op'>=</span> <span class='va'>yq</span> <span class='op'>+</span> <span class='fu'><a href='https://lubridate.tidyverse.org/reference/period.html'>days</a></span><span class='op'>(</span><span class='fl'>45</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>acftime<span class='op'>=</span><span class='fu'>case_when</span><span class='op'>(</span><span class='va'>yq_mid</span><span class='op'>&gt;</span><span class='va'>acf_start_date</span> <span class='op'>&amp;</span> <span class='va'>yq_mid</span><span class='op'>&lt;</span><span class='va'>acf_end_date</span> <span class='op'>~</span> <span class='st'>"acf"</span>,
+                           <span class='va'>yq_mid</span><span class='op'>&lt;</span><span class='va'>acf_start_date</span> <span class='op'>~</span> <span class='st'>"pre-acf"</span>,
+                           <span class='va'>yq_mid</span><span class='op'>&gt;</span><span class='va'>acf_end_date</span> <span class='op'>~</span> <span class='st'>"post-acf"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>acftime<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>acftime</span>, levels<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"pre-acf"</span>, <span class='st'>"acf"</span>, <span class='st'>"post-acf"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+</code></pre>
+</div>
+</div>
+<h3 id="wrangle-the-2011-2018-data">Wrangle the 2011-2018 data</h3>
+<p>Including adding in the “extra data” form lab that wasn’t in PM’s spreadsheet. Prospectively collected data.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># This adds the lab information (and the people who were diagnosed directly through ACF vs. indirectly)</span>
+<span class='va'>tb_2011_2018</span> <span class='op'>&lt;-</span> 
+  <span class='va'>cases_l</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>mutate</span><span class='op'>(</span>yq<span class='op'>=</span><span class='fu'><a href='https://lubridate.tidyverse.org/reference/ymd.html'>yq</a></span><span class='op'>(</span><span class='va'>year_q</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>left_join</span><span class='op'>(</span><span class='va'>extra_info</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='co'># the people not from Blantyre City *don't* get merged here as "left join" rather than full join.</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>cult_lab<span class='op'>=</span><span class='fu'>case_when</span><span class='op'>(</span>
+  <span class='op'>(</span><span class='va'>l30cultures</span><span class='op'>==</span><span class='st'>"Pos"</span> <span class='op'>|</span> <span class='va'>l30cultures</span><span class='op'>==</span><span class='st'>"Scanty"</span><span class='op'>)</span> <span class='op'>&amp;</span> <span class='va'>l32id</span><span class='op'>==</span><span class='st'>"MTB"</span> <span class='op'>~</span> <span class='st'>"Culture confirmed"</span>
+<span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>mutate</span><span class='op'>(</span>diagnosed<span class='op'>=</span><span class='fu'>case_when</span><span class='op'>(</span>
+    <span class='va'>new_mode</span><span class='op'>==</span><span class='fl'>3</span> <span class='op'>~</span> <span class='st'>"e) Direct ACF"</span>,
+    <span class='va'>smr_clinic</span><span class='op'>==</span><span class='st'>"b) Smear-positive"</span> <span class='op'>~</span> <span class='st'>"d) Smr clinic"</span>,
+    <span class='va'>xpert_clinic</span><span class='op'>==</span><span class='st'>"b) Xpert-positive"</span> <span class='op'>~</span> <span class='st'>"c) Xpert clinic"</span>,
+    <span class='va'>cult_lab</span><span class='op'>==</span><span class='st'>"Culture confirmed"</span> <span class='op'>~</span> <span class='st'>"b) Smr/cult TB lab"</span>,
+    <span class='cn'>T</span> <span class='op'>~</span> <span class='st'>"a) Clinically dx"</span>
+  <span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>mutate</span><span class='op'>(</span>diagnosed<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>diagnosed</span>, levels<span class='op'>=</span><span class='va'>diag_fct</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>facility <span class='op'>=</span> <span class='fu'>case_when</span><span class='op'>(</span>
+    <span class='va'>fac_code</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"BTQE"</span><span class='op'>)</span> <span class='op'>~</span> <span class='st'>"a) Central hospital"</span>,
+    <span class='va'>fac_code</span>  <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"BTBG"</span>,<span class='st'>"BTCH"</span>,<span class='st'>"BTLB"</span>,<span class='st'>"BTND"</span>,<span class='st'>"BTSL"</span>,<span class='st'>"BTZG"</span>,<span class='st'>"BTGW"</span><span class='op'>)</span>  <span class='op'>~</span> <span class='st'>"b) Health centre"</span>,
+    <span class='va'>fac_code</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"BTBAH"</span>, <span class='st'>"BTCH"</span>, <span class='st'>"BTMB"</span>, <span class='st'>"BTMW"</span><span class='op'>)</span> <span class='op'>~</span> <span class='st'>"c) Private health facility"</span>,
+    <span class='cn'>T</span> <span class='op'>~</span> <span class='st'>"d) Not recorded"</span>
+  <span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>hiv<span class='op'>=</span><span class='fu'>case_when</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>hiv</span><span class='op'>)</span> <span class='op'>~</span> <span class='st'>"c) Not recorded"</span>, <span class='cn'>T</span> <span class='op'>~</span> <span class='va'>hiv</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>art<span class='op'>=</span><span class='fu'>case_when</span><span class='op'>(</span><span class='va'>hiv</span><span class='op'>==</span><span class='st'>"b) HIV-positive"</span> <span class='op'>&amp;</span> <span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>art</span><span class='op'>)</span><span class='op'>==</span><span class='cn'>F</span> <span class='op'>~</span> <span class='va'>art</span>,  
+                       <span class='va'>hiv</span><span class='op'>==</span><span class='st'>"b) HIV-positive"</span> <span class='op'>&amp;</span> <span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>art</span><span class='op'>)</span> <span class='op'>~</span> <span class='st'>"c) Not recorded"</span>, <span class='co'># why does no-one have a missing ART status?</span>
+                       <span class='cn'>T</span> <span class='op'>~</span> <span class='cn'>NA_character_</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>ageg <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/cut.html'>cut</a></span><span class='op'>(</span><span class='va'>age</span>, breaks<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>15</span>,<span class='fl'>25</span>,<span class='fl'>35</span>,<span class='fl'>45</span>,<span class='fl'>55</span>,<span class='fl'>65</span>,<span class='cn'>Inf</span><span class='op'>)</span>, right<span class='op'>=</span><span class='cn'>F</span>, labels<span class='op'>=</span><span class='va'>age_levels</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>ageg</span><span class='op'>!=</span><span class='st'>"0-14"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='co'># this is now just adults who reside in Blantyre City  (removed 1272 children from the dataset for analysis (see methods of paper for rationale - mainly that children not targetted by ACF at all))</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>acfarea<span class='op'>=</span><span class='fu'>case_when</span><span class='op'>(</span><span class='va'>acf</span><span class='op'>==</span><span class='st'>"ACF"</span> <span class='op'>~</span> <span class='st'>"b) ACF"</span>,
+                           <span class='va'>acf</span><span class='op'>==</span><span class='st'>"Non-ACF"</span> <span class='op'>~</span> <span class='st'>"a) Non-ACF"</span><span class='op'>)</span><span class='op'>)</span> 
+</code></pre>
+</div>
+</div>
+<h3 id="wrangle-the-2009-2010-data">Wrangle the 2009-2010 data</h3>
+<p>Retrospectively collected (grouped) data. Make this into a “long” dataset, using “uncount”.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># Use "uncount" to change grouped data into a one-observation-per-row data (have to create "intermediate" dfs for this, as I don't think I can "uncount" smr-neg and smr-pos seperately in one step)</span>
+<span class='va'>int_a</span> <span class='op'>&lt;-</span> <span class='va'>cases_g</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>yq<span class='op'>=</span><span class='fu'><a href='https://lubridate.tidyverse.org/reference/ymd.html'>yq</a></span><span class='op'>(</span><span class='va'>year_q</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>yq</span><span class='op'>&lt;=</span><span class='fu'><a href='https://lubridate.tidyverse.org/reference/ymd.html'>dmy</a></span><span class='op'>(</span><span class='st'>"01 Jan 2011"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>pivot_wider</span><span class='op'>(</span>names_from<span class='op'>=</span><span class='va'>tbcases</span>, values_from<span class='op'>=</span><span class='va'>n</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>rename</span><span class='op'>(</span>micro_pos<span class='op'>=</span><span class='va'>`Smr/Xpert-positive cases`</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>micro_neg<span class='op'>=</span><span class='va'>`All cases`</span> <span class='op'>-</span> <span class='va'>micro_pos</span><span class='op'>)</span>
+<span class='va'>int_b</span> <span class='op'>&lt;-</span> <span class='va'>int_a</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>yq</span>, <span class='va'>acf</span>, <span class='va'>micro_pos</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>uncount</span><span class='op'>(</span><span class='va'>micro_pos</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>smr<span class='op'>=</span><span class='st'>"smr pos"</span><span class='op'>)</span>
+<span class='va'>int_c</span> <span class='op'>&lt;-</span> <span class='va'>int_a</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>yq</span>, <span class='va'>acf</span>, <span class='va'>micro_neg</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>uncount</span><span class='op'>(</span><span class='va'>micro_neg</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>smr<span class='op'>=</span><span class='st'>"smr neg / not done"</span><span class='op'>)</span>
+
+<span class='va'>tb_2009_2010</span> <span class='op'>&lt;-</span> <span class='va'>int_b</span> <span class='op'>%&gt;%</span> <span class='fu'>full_join</span><span class='op'>(</span><span class='va'>int_c</span><span class='op'>)</span>  <span class='op'>%&gt;%</span> 
+  <span class='fu'>mutate</span><span class='op'>(</span>diagnosed<span class='op'>=</span><span class='fu'>case_when</span><span class='op'>(</span>
+    <span class='va'>smr</span><span class='op'>==</span><span class='st'>"smr pos"</span> <span class='op'>~</span> <span class='st'>"d) Smr clinic"</span>, <span class='co'># there was no Xpert and no TB lab culture during 2009-2010</span>
+    <span class='cn'>T</span> <span class='op'>~</span> <span class='st'>"a) Clinically dx"</span>
+  <span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>mutate</span><span class='op'>(</span>diagnosed<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>diagnosed</span>, levels<span class='op'>=</span><span class='va'>diag_fct</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+      <span class='fu'>mutate</span><span class='op'>(</span>acfarea<span class='op'>=</span><span class='fu'>case_when</span><span class='op'>(</span><span class='va'>acf</span><span class='op'>==</span><span class='st'>"ACF"</span> <span class='op'>~</span> <span class='st'>"b) ACF"</span>,
+                           <span class='va'>acf</span><span class='op'>==</span><span class='st'>"Non-ACF"</span> <span class='op'>~</span> <span class='st'>"a) Non-ACF"</span><span class='op'>)</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<h3 id="merge-timeperiods-and-create-grouped-data-for-each-quarter">Merge timeperiods and create “grouped” data for each quarter</h3>
+<p>Merge 2009-2010 to 2011 onwards, and label time periods.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='va'>tb_2009_2018</span> <span class='op'>&lt;-</span> <span class='va'>tb_2009_2010</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>full_join</span><span class='op'>(</span><span class='va'>tb_2011_2018</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>yq</span>, <span class='va'>acfarea</span>, <span class='va'>diagnosed</span>, <span class='va'>acf</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>mutate</span><span class='op'>(</span>yq_mid <span class='op'>=</span> <span class='va'>yq</span> <span class='op'>+</span> <span class='fu'><a href='https://lubridate.tidyverse.org/reference/period.html'>days</a></span><span class='op'>(</span><span class='fl'>45</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>acftime<span class='op'>=</span><span class='fu'>case_when</span><span class='op'>(</span><span class='va'>yq_mid</span><span class='op'>&gt;</span><span class='va'>acf_start_date</span> <span class='op'>&amp;</span> <span class='va'>yq_mid</span><span class='op'>&lt;</span><span class='va'>acf_end_date</span> <span class='op'>~</span> <span class='st'>"acf"</span>,
+                           <span class='va'>yq_mid</span><span class='op'>&lt;</span><span class='va'>acf_start_date</span> <span class='op'>~</span> <span class='st'>"pre-acf"</span>,
+                           <span class='va'>yq_mid</span><span class='op'>&gt;</span><span class='va'>acf_end_date</span> <span class='op'>~</span> <span class='st'>"post-acf"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>mutate</span><span class='op'>(</span>acftime<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span><span class='op'>(</span><span class='va'>acftime</span>, levels<span class='op'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"pre-acf"</span>, <span class='st'>"acf"</span>, <span class='st'>"post-acf"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># check number of records correct</span>
+<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>tb_2009_2010</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>tb_2011_2018</span><span class='op'>)</span>
+</code></pre>
+</div>
+<pre><code>[1] 20119</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>tb_2009_2018</span><span class='op'>)</span> <span class='co'># same</span>
+</code></pre>
+</div>
+<pre><code>[1] 20119</code></pre>
+</div>
+<p>Then created “grouped” datasets, that contain the “case notification rates” (CNRs) rather than just number of cases. This is adult TB diagnoses per 100,000 adult population, by ACF area (“add_denoms” function specifed above under section “Start”).</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='co'># This is cnrs for each of four levels of how diagnosed</span>
+<span class='va'>cnrs_d</span> <span class='op'>&lt;-</span> <span class='va'>tb_2009_2018</span> <span class='op'>%&gt;%</span> <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>yq</span>, <span class='va'>acfarea</span>, <span class='va'>diagnosed</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>summarise</span><span class='op'>(</span>n<span class='op'>=</span><span class='fu'>n</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>complete</span><span class='op'>(</span><span class='va'>.</span>,<span class='va'>yq</span>, <span class='va'>acfarea</span>, <span class='va'>diagnosed</span>, fill <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>n<span class='op'>=</span><span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='co'># levels that have no people, should exist in data, with "0" people</span>
+  <span class='fu'>ungroup</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>add_denoms</span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='co'># This is all form</span>
+<span class='va'>cnrs_all</span> <span class='op'>&lt;-</span> <span class='va'>tb_2009_2018</span> <span class='op'>%&gt;%</span> <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>yq</span>, <span class='va'>acfarea</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'>summarise</span><span class='op'>(</span>n<span class='op'>=</span><span class='fu'>n</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>ungroup</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>add_denoms</span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='co'># This is smear pos just from clinic (i.e excluding those subsequently micro confirmed in TB lab)</span>
+<span class='va'>cnrs_smp_clinic</span> <span class='op'>&lt;-</span> <span class='va'>tb_2009_2018</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>diagnosed</span><span class='op'>==</span><span class='st'>"c) Xpert clinic"</span> <span class='op'>|</span> <span class='va'>diagnosed</span><span class='op'>==</span><span class='st'>"d) Smr clinic"</span> <span class='op'>|</span> <span class='va'>diagnosed</span><span class='op'>==</span><span class='st'>"e) Direct ACF"</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>group_by</span><span class='op'>(</span><span class='va'>yq</span>, <span class='va'>acfarea</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>summarise</span><span class='op'>(</span>n<span class='op'>=</span><span class='fu'>n</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>ungroup</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>add_denoms</span><span class='op'>(</span><span class='op'>)</span>
+</code></pre>
+</div>
+</div>
+<p>Save these datasets (with a reminder of what they are).</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>tb_2009_2018</span>, file<span class='op'>=</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"data"</span>,<span class='st'>"tb_2009_2018.rds"</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># Each row represents one adult in Blantyre City diagnosed with TB, information on method of TB diagnosis, quarter-year of diagnosis and whether they lived in an ACF or non-ACF area.</span>
+<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>tb_2011_2018</span>, file<span class='op'>=</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"data"</span>,<span class='st'>"tb_2010_2018.rds"</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># Each row represents one adult in Blantyre City diagnosed with TB, but with more information per person than the 2009_2010 file (i.e. includes HIV status, age and sex)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>pop</span>, file<span class='op'>=</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"data"</span>,<span class='st'>"pop.rds"</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># Blantyre City adult population by quarter-year and ACF vs. non-ACF area</span>
+
+<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>cnrs_d</span>, file<span class='op'>=</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"data"</span>,<span class='st'>"cnrs_d.rds"</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># TB CNRs (adult TB diagnoses per 100,000 adults) by method of diagnosis</span>
+<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>cnrs_all</span>, file<span class='op'>=</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"data"</span>,<span class='st'>"cnrs_all.rds"</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># All form TB CNRs</span>
+<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span><span class='op'>(</span><span class='va'>cnrs_smp_clinic</span>, file<span class='op'>=</span><span class='fu'><a href='https://here.r-lib.org//reference/here.html'>here</a></span><span class='op'>(</span><span class='st'>"data"</span>,<span class='st'>"cnrs_smp_clinic.rds"</span><span class='op'>)</span><span class='op'>)</span> <span class='co'># CNR for smr positive / micro confirmed TB (at the time of starting TB treatment)</span>
+</code></pre>
+</div>
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>

@@ -16,5 +16,7 @@ navbar:
       href: Analysis.html
     - text: "Tables and Figures"
       href: tableandfig.html
-      
-output: distill::distill_article
+output: 
+  distill::distill_article:
+    css: styles.css
+
