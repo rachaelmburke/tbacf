@@ -4,7 +4,15 @@ description: |
   Some additional details about the website
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-```
+This is a website (and github repository) of data and code for our work about impact of Active Case Finding on TB Case Notifictation in Blantyre.
 
+We are the Helse Nord Tuberculosis Initiatve (HNTI) at Kamuzu University of Health Science and the Malawi Liverpool Wellcome Population Health group; a group of reseachers affiliated with Malawi-Liverpool-Wellcome, Liverpool School of Tropical Medicine, London School of Hygiene and Tropical Medicine, Kamuzu University of Health Sciences and University of Sheffield.
+
+The TB electronic reporting system is a partnership between our group, Malawi National TB programme and Blantyre District Health Office.
+
+Some more information about our research group is available at Dr Peter MacPherson's group manual here https://petermacp.github.io/mlw.public.health.group/ and the HNTI group at https://hnti.webnode.co.uk/  
+
+More data about TB epidemiology in Blantyre is here https://github.com/petermacp/BlantyreTBEpi (a companion package to the paper 'MacPherson, P. et al. Disparities in access to diagnosis and care in Blantyre, Malawi, identified through enhanced tuberculosis surveillance and spatial analysis. BMC Medicine 17, 21 (2019). https://doi.org/10.1186/s12916-019-1260-6'
+ )
+
+If you have any questions, we'd be very happy to discuss.  A good first port of call is probably mnliwasa [at] kuhes [dot] ac [dot] mw or rachael.burke [at] lshtm [dot] ac [dot] uk.
