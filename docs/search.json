@@ -1,0 +1,21 @@
+{
+  "articles": [
+    {
+      "path": "about.html",
+      "title": "About this site",
+      "description": "Some additional details about the website",
+      "author": [],
+      "contents": "\n\n\n\n",
+      "last_modified": "2022-07-20T12:37:13+01:00"
+    },
+    {
+      "path": "index.html",
+      "title": "tbacf",
+      "description": "Welcome to the website. I hope you enjoy it!\n",
+      "author": [],
+      "contents": "\n\n\n\n",
+      "last_modified": "2022-07-20T12:37:15+01:00"
+    }
+  ],
+  "collections": []
+}
