@@ -1,8 +1,9 @@
 name: "tbacf"
-title: "tbacf"
+title: "TB ACF"
 description: |
-  tbacf
+  A website to show code for our research on impact of ACF on TB case notifications
 output_dir: "."
+favicon: images/favicon.ico
 navbar:
   right:
     - text: "Home"
