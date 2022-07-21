@@ -2081,6 +2081,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   
   .distill-site-header{ 
     background-color: #00b7a7;
+    font-size: 17px;
+      color:  #000000;
+    padding: 21px 0px;
   }
   </style>
   <!--/radix_placeholder_site_in_header-->
@@ -2104,9 +2107,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="nav-left">
 <a href="index.html" class="title">tbacf</a>
 <a href="a_setup.html">A Set Up</a>
-<a href="a_tableandfig.html">B Tables and Figures (1)</a>
-<a href="Analysis.html">C Analysis</a>
-<a href="b_tableandfig.html">D Tables and Figures (2)</a>
+<a href="b_tableandfig.html">B Tables and Figures (1)</a>
+<a href="c_analysis.html">C Analysis</a>
+<a href="d_tableandfig.html">D Tables and Figures (2)</a>
 </div>
 <div class="nav-right">
 <a href="index.html">Home</a>
@@ -2133,8 +2136,16 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>The github repo is at <a href="https://github.com/rachaelmburke/tbacf" class="uri">https://github.com/rachaelmburke/tbacf</a></p>
 <p>To summarise:</p>
 <p>Contents: This website has “knitted” Rmarkdown files to show our code. Data needed is in the “mlwdata” package and in the github repo under “data_sharing” folder.</p>
-<p>Repo: Over in the github repo you can have the unknitted .RmD files, which you should be able to use on your own computer (in the “docs” subfolder). I have made extensive use of the “here” package, but you might find you nonetheless you will probably need to fix some relative file paths. If you work through the four .RmD files in order and create a “data” folder locally, you should create the data you need for subsequent .rmd files. The only thing not included here is shape files to recreate the map (the basemap is open source).</p>
-<p>Documents: A Setup: Gets data from “mlwdata” package and wrangles into format needed for these analyses. B Tables and Figs:</p>
+<p>Repo: Over in the github repo you can have the unknitted .rmd files, which you should be able to use on your own computer (in the “docs” subfolder). I have made extensive use of the “here” package with a file root in the main github repo (i.e. not in the “docs” subfolder), but you might find you nonetheless you will probably need to fix some relative file paths. If you work through the four .rmd files in order and create a “data” folder locally, each markdown will save files needed for subsequent markdown files. The only thing not included here is shape files to recreate the map (the basemap is open source), so b_tableandfig.rmd will not run straight through. We are working on confirming if we can make these freely available and will add in due course if possible.</p>
+<p>Documents:</p>
+<ul>
+<li><p>A Setup: Gets data from “mlwdata” package (which is at github/petermacp/mlwdata) and from “extra_info.rds” (in “data_sharing” on this repo) and wrangles into format needed for these analyses. We use both “long” (one row per person diagnosed with TB) data and “grouped” data (grouped in number diagnosed per quarter - often by Bac+ vs. Bac- and by ACF area vs. non-ACF area).</p></li>
+<li><p>B Tables and Figs: Draws figure 1 (map of ACF vs. non-ACF areas), figure 2 (CNRs over time by area and method of diagnosis) and the numbers referenced in text. Also draws a “base graph” of observed CNRs over time (this gets addedd to in d_tableandfig.rmd) to put the modelled prediction and counterfactual lines.</p></li>
+<li><p>C Analysis: Runs models for predicting “real” vs. counterfactual [no ACF] scenarios, the difference and the CI of the difference. For details see the paper. Briefly there is a “without control” (“woc”) set of models looking at time trends only within the ACF areas, and a “with control” (“wc”) that compares trends in ACF areas with pre-ACF trends <em>and</em> trends in non-ACF areas. For each set of models we consider Bac+ and all form TB seperately. We calculate sum of difference in cases between observed v. counterfactual, and the difference in mean CNR. We use delta method to calculate CIs of these differences. See paper, and in particular appendix for more information. Appendix is in “files” folder in main repo.</p></li>
+<li><p>D Tables and Figs: Draws graphs of predictions from all models (for figure 3 in paper.)</p></li>
+</ul>
+<p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.</p>
+<p><a href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" alt="CC BY-NC-SA 4.0" /></a></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

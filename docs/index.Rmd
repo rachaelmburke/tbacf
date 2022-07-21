@@ -17,7 +17,8 @@ Contents: This website has "knitted" Rmarkdown files to show our code.  Data nee
 
 Repo: Over in the github repo you can have the unknitted .rmd files, which you should be able to use on your own computer (in the "docs" subfolder).  I have made extensive use of the "here" package with a file root in the main github repo (i.e. not in the "docs" subfolder), but you might find you nonetheless you will probably need to fix some relative file paths.  If you work through the four .rmd files in order and create a "data" folder locally, each markdown will save files needed for subsequent markdown files.  The only thing not included here is shape files to recreate the map (the basemap is open source), so b_tableandfig.rmd will not run straight through.  We are working on confirming if we can make these freely available and will add in due course if possible.
 
-Documents:    
+Documents:   
+
   *  A Setup: Gets data from "mlwdata" package (which is at github/petermacp/mlwdata) and from "extra_info.rds" (in "data_sharing" on this repo) and wrangles into format needed for these analyses.  We use both "long" (one row per person diagnosed with TB) data and "grouped" data (grouped in number diagnosed per quarter - often by Bac+ vs. Bac- and by ACF area vs. non-ACF area).  
 
   *  B Tables and Figs: Draws figure 1 (map of ACF vs. non-ACF areas), figure 2 (CNRs over time by area and method of diagnosis) and the numbers referenced in text.  Also draws a "base graph" of observed CNRs over time (this gets addedd to in d_tableandfig.rmd) to put the modelled prediction and counterfactual lines.  

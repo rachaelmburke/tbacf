@@ -62,4 +62,4 @@
 #'
 #' # Availability of code
 #'
-#' The supplementary data and code files (available at www.github.com/rachaelmburke/XXXX) show the implementation of this work in R.
+#' The supplementary data and code files (available at www.github.com/rachaelmburke/tbacf) show the implementation of this work in R.
