@@ -13,11 +13,11 @@ navbar:
     - text: "A Set Up"
       href: a_setup.html
     - text: "B Tables and Figures (1)"
-      href: a_tableandfig.html
-    - text: "C Analysis"
-      href: Analysis.html
-    - text: "D Tables and Figures (2)"
       href: b_tableandfig.html
+    - text: "C Analysis"
+      href: c_analysis.html
+    - text: "D Tables and Figures (2)"
+      href: d_tableandfig.html
 output: 
   distill::distill_article:
     css: styles.css

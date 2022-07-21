@@ -51,7 +51,7 @@ pop <- mlwdata::acf_cnrs_overall %>%
   dplyr::select(yq, yq_num, acfarea, population)
 
 # This is some additional data from TB lab and x01 form
-extra_info <- readRDS(here("data_raw","extra_info.rds"))
+extra_info <- readRDS(here("data_sharing","extra_info.rds")) %>% select(unique_id, l30cultures, l32id, new_mode)
 ```
 
 ### Define some functions
@@ -89,16 +89,16 @@ tb_2011_2018 <- cases_l %>%
     smr_clinic=="b) Smear-positive" ~ "d) Smr clinic",
     xpert_clinic=="b) Xpert-positive" ~ "c) Xpert clinic",
     cult_lab=="Culture confirmed" ~ "b) Smr/cult TB lab",
-    T ~ "a) Clinically dx")) %>% 
+    TRUE ~ "a) Clinically dx")) %>% 
   mutate(facility = case_when(
     fac_code %in% c("BTQE") ~ "a) Central hospital",
     fac_code  %in% c("BTBG","BTCH","BTLB","BTND","BTSL","BTZG","BTGW")  ~ "b) Health centre",
     fac_code %in% c("BTBAH", "BTCH", "BTMB", "BTMW") ~ "c) Private health facility",
-    T ~ "d) Not recorded")) %>%
-  mutate(hiv=case_when(is.na(hiv) ~ "c) Not recorded", T ~ hiv)) %>%
+    TRUE ~ "d) Not recorded")) %>%
+  mutate(hiv=case_when(is.na(hiv) ~ "c) Not recorded", TRUE ~ hiv)) %>%
   mutate(art=case_when(hiv=="b) HIV-positive" & is.na(art)==F ~ art,  
                        hiv=="b) HIV-positive" & is.na(art) ~ "c) Not recorded", # why does no-one have a missing ART status?
-                       T ~ NA_character_)) %>%
+                       TRUE ~ NA_character_)) %>%
   mutate(ageg = cut(age, breaks=c(0,15,25,35,45,55,65,Inf), right=F, labels=age_levels)) %>%
   filter(ageg!="0-14") %>% # this is now just adults who reside in Blantyre City  (removed 1272 children from the dataset for analysis (see methods of paper for rationale - mainly that children not targetted by ACF at all))
   mutate(acfarea=case_when(acf=="ACF" ~ "b) ACF",
@@ -119,7 +119,7 @@ int_c <- int_a %>% dplyr::select(yq, acf, micro_neg) %>% uncount(micro_neg) %>% 
 tb_2009_2010 <- int_b %>% full_join(int_c)  %>% 
   mutate(diagnosed=case_when(
     smr=="smr pos" ~ "d) Smr clinic", # there was no Xpert and no TB lab culture during 2009-2010
-    T ~ "a) Clinically dx"
+    TRUE ~ "a) Clinically dx"
   )) %>% mutate(diagnosed=factor(diagnosed, levels=diag_fct)) %>%
       mutate(acfarea=case_when(acf=="ACF" ~ "b) ACF",
                            acf=="Non-ACF" ~ "a) Non-ACF"))
@@ -172,6 +172,7 @@ Save these datasets (with a reminder of what they are).
 ```{r, message=F}
 saveRDS(tb_2009_2018, file=here("data","tb_2009_2018.rds")) # Each row represents one adult in Blantyre City diagnosed with TB, information on method of TB diagnosis, quarter-year of diagnosis and whether they lived in an ACF or non-ACF area.
 saveRDS(tb_2011_2018, file=here("data","tb_2010_2018.rds")) # Each row represents one adult in Blantyre City diagnosed with TB, but with more information per person than the 2009_2010 file (i.e. includes HIV status, age and sex)
+saveRDS(tb_2009_2010, file=here("data","tb_2009_2010.rds"))
 saveRDS(pop, file=here("data","pop.rds")) # Blantyre City adult population by quarter-year and ACF vs. non-ACF area
 
 saveRDS(cnrs_d, file=here("data","cnrs_d.rds")) # TB CNRs (adult TB diagnoses per 100,000 adults) by method of diagnosis

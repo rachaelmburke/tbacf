@@ -1,201 +1,244 @@
 ---
-title: "D Tables and Figures (2)"
+title: "B Tables and Figures (1)"
 description: |
   Code to create tables and figures from our paper.
 author:
   - name: Rachael Burke
 date: "`r Sys.Date()`"
-output: distill::distill_article
+output:
+  distill::distill_article:
+    toc: true
+    toc_depth: 2
 ---
 
-This markdown shows the final figures, incorporating the estimates and their uncertainty.  Note that the the CIs for trend here are from "predict" command from the model.  Delta method (see "analysis.rmd") was used to calculate estimates of sum of quarterly diagnosis or mean of quarterly CNRs and it's CI for tables.  
+This (A) markdown shows the descriptive tables and figures, and the "base" plots of actual observed TB diagnoses.  We use this base plots in the "analysis" markdown to build up lines showing predictions [including showing our working as going along].
 
-```{r, warnings=F}
-library(tidyverse)
-library(data.table)
-library(lubridate)
+The final (post-analysis) tables and figs are drawn in "b_tableandfig.Rmd"
+
+# Load data
+
+```{r}
 library(here)
+library(tidyverse)
+library(janitor)
+library(lubridate)
+library(arsenal) # for tableby
 
 acf_start_date <- dmy("01 April 2011") 
 acf_end_date <- dmy("30 Sep 2014")
 
-# Data - as before (see "setup.rmd")
-smp_c <- readRDS(here("data","cnrs_smp_clinic.rds")) %>% filter(acftime!="post-acf") %>% as.data.table() 
-all_f <- readRDS(here("data","cnrs_all.rds")) %>% filter(acftime!="post-acf") %>% as.data.table() # all form
+# These are the "long" datasets (one row per person with TB)
+tb_2009_2018 <- readRDS(file=here("data","tb_2009_2018.rds")) # Each row represents one adult in Blantyre City diagnosed with TB, information on method of TB diagnosis, quarter-year of diagnosis and whether they lived in an ACF or non-ACF area.
+tb_2011_2018 <- readRDS(file=here("data","tb_2010_2018.rds")) # Each row represents one adult in Blantyre City diagnosed with TB, but with more information per person than the 2009_2010 file (i.e. includes HIV status, age and sex)
+tb_2009_2010 <- readRDS(file=here("data","tb_2009_2010.rds"))
+pop <- readRDS(file=here("data","pop.rds")) # Blantyre City adult population by quarter-year and ACF vs. non-ACF area
 
-# Models - as before (see "analysis.rmd")
-mod.woc <- readRDS(file=here("data","mod.woc.rds"))
-mod.woc.allf <- readRDS(file=here("data","mod.woc.allf.rds"))
-mod.wc <- readRDS(file=here("data","mod.wc.rds"))
-mod.wc.allf <- readRDS(file=here("data","mod.wc.allf.rds"))
+# These are the "wide" datasets with TB notifications grouped by quarter and with CNR
+cnrs_smp_clinic <- readRDS(here("data","cnrs_smp_clinic.rds"))
+cnrs_all <- readRDS(here("data","cnrs_all.rds"))  # all form
+cnrs_d <- readRDS(here("data","cnrs_d.rds")) # cnrs by method of diagnosis
+```
 
-# Base graphs (to illustrate model predictions / fit to real data as we go)
-load(here("data/cnr_base_plot_micro_clinic.rdata"))
-load(here("data/cnr_base_plot_all.rdata"))
+# Figure 1: Map
 
-t1 <- smp_c[acftime=='acf',min(yq_num)] # t1 = START of ACF
-t2 <- smp_c[acftime=='acf',max(yq_num)] # t2 = END of ACF
-T <- t2-t1+1  # plus one because goes from START of first quarter to END of last quarter; this is the TIME (in number of quarters) from ACF starting.
+This is a map of Blantyre.  Using "tmap". Note that shape files are not included in this repo as they have been extremely "fussy" and I have struggled to get them working properly. 
+
+```{r}
+library(sf)
+library(tmaptools)
+library(tmap)
+library(OpenStreetMap)
+
+
+blantyre_city <- sf::st_read(here("data_raw","blantyre_tas.kml")) # rows 1-9 are Blantyre Rural TAs
+acf <- blantyre_city[c(9,14:18),]
+nonacf <- blantyre_city[c(10:13,19:31),]
+
+clinic <- sf::st_read(here("data_raw","waypoints of facilities and landmarks.shp")) 
+clinic <- clinic[c(1:11),]
+osm <- read_osm(bb(blantyre_city[c(9:31),], current.projection="wgs84"), ext=1.1, raster=F)
+
+tm_shape(osm) + 
+  tm_rgb() +
+  tm_shape(nonacf) +
+  tm_fill(alpha=0.2, col="#46ACC8") +
+  tm_borders(col="#46ACC8", alpha=0.8) +
+  tm_shape(acf) +
+  tm_fill(alpha=0.2, col="#B40F20") +
+  tm_borders(col="#B40F20", alpha=0.8) +
+  tm_shape(clinic) +
+  tm_symbols(size=0.2, shape=15, col="black") +
+  tm_scale_bar(color.dark = "black") +
+  tm_compass(position=c("right","top")) +
+  tm_add_legend(type="fill", col=c("#46ACC8","#B40F20"), labels=c("Non-ACF area","ACF area")) +
+  tm_add_legend(type="symbol", col="black", shape=15, labels=c("Healthcare clinic")) +
+  tm_legend(legend.position=c("left","bottom"))
 
 ```
 
-## Without control
+
+# Table 1
+
+Came from data in Dr M Nliwasa's work / PhD thesis.
+
+# Figure 2
 
 ```{r}
-# This is a dataframe of every level we actually want to make a prediction for to use for calculations
-scaffold <- list(
-  acftime=c("pre-acf","acf"), 
-  acfarea=c("b) ACF","a) Non-ACF"), 
-  yq_num=seq(from=0, to=max(smp_c$yq_num),length.out=200)) %>%
-  expand.grid() %>% 
-  as_tibble() %>% 
-  arrange(acfarea) %>%
-  mutate(population=c(rep(seq(from=min(smp_c[acfarea=="b) ACF"]$population), to=max(smp_c[acfarea=="b) ACF"]$population), length.out = 200), each=2),
-  rep(seq(from=min(smp_c[acfarea=="a) Non-ACF"]$population), to=max(smp_c[acfarea=="a) Non-ACF"]$population), length.out = 200), each=2))
-) %>%
-  arrange(yq_num) %>%
-  mutate(yq=rep(seq(from=min(smp_c$yq), to=max(smp_c$yq + months(3)), length.out = 200), each=4)) %>%
-  as.data.table()
+cnrs_d <- cnrs_d %>% 
+  mutate(acfarea_l = 
+           case_when(acfarea=="b) ACF" ~ "ACF area", 
+                     acfarea=="a) Non-ACF" ~ "Non-ACF area")) # this is so that the graph gets labelled properly / clearly
 
-# this function makes preductions from model multiple timepoints (200 points, see yq_num from "scaffold")
-predfx <- function(newdata, model){ 
-  int <- predict(model, newdata=newdata, se.fit=T, type="response")
-  newdata %>% mutate(pred=int$fit/population * 4e5,
-                            pred.low=(int$fit -1.96*int$se.fit)/population * 4e5,
-                            pred.high=(int$fit + 1.96*int$se.fit)/population * 4e5)
+diagnosis_method <- ggplot(cnrs_d, aes(x=yq_mid + days(45), y=cnr, fill=diagnosed)) +
+  #annotate(geom="rect", xmin=acf_start_date, xmax=acf_end_date, ymin=-Inf, ymax=Inf, alpha=0.4) +
+  geom_area(alpha=0.6 , size=.5, colour="black", data=.%>% filter(acfarea=="b) ACF")) +
+  geom_area(alpha=0.6 , size=.5, colour="black", data=.%>% filter(acfarea=="a) Non-ACF")) +
+  geom_vline(xintercept=acf_start_date, linetype=2) +
+  geom_vline(xintercept=acf_end_date, linetype=2) +
+  facet_wrap(~acfarea_l) +
+  labs(x="Year and quarter",
+       y="Case notification rate",
+       fill="Method of TB dx") +
+  scale_fill_manual(values=c("#46ACC8","#E58601","#E2D200","#B40F20", "#68BB59")) +
+  theme_bw()
+
+diagnosis_method
+
+ggsave(plot=diagnosis_method, file=here("figures","Fig2_CNR_by_diagnosis_method.pdf"), width=10, height=7)
+```
+
+# Fig 3 Base plot
+
+This gets built up later with data from "analysis.rmd".  See b_tableandfig for final figure from paper.
+
+
+```{r}
+plot_fx <- function(df){
+ggplot(df) +
+  annotate(geom="rect", xmin=acf_start_date, xmax=acf_end_date, ymin=-Inf, ymax=Inf, alpha=0.1) +
+  geom_point(aes(x=yq_mid, y=cnr, color=acfarea), shape=20, alpha=0.8) +
+  geom_line(aes(y=cnr, x=yq_mid, color=acfarea), alpha=0.3) +
+  labs(x="Time (quarter-year)",
+       y = "Case notification rate (per 100,000 person-years)",
+       color="Area \n(ACF vs. non-ACF)",
+       caption="Shaded area is time ACF was ongoing") +
+  scale_color_brewer(palette = "Set1") +
+  theme_bw()
 }
 
-# Make the preductions
-pred.woc.smp <- predfx(scaffold[acfarea=="b) ACF"], mod.woc)  %>%
-  mutate(r=case_when( # this is the "real" scenario in woc model (the c'fact is to assume acftime==pre-acf throughout)
-    acfarea=="b) ACF" & acftime=="pre-acf" & yq<=acf_start_date ~ T,
-    acfarea=="b) ACF" & acftime=="acf" & yq>=acf_start_date & yq<=acf_end_date  ~ T))
+cnr_base_plot_all <- plot_fx(cnrs_all) +
+  labs(title="All form TB")
+cnr_base_plot_all
 
-pred.woc.allf <- predfx(scaffold[acfarea=="b) ACF"], mod.woc.allf)  %>%
-  mutate(r=case_when( # this is the "real" scenario in woc model (the c'fact is to assume acftime==pre-acf throughout)
-    acfarea=="b) ACF" & acftime=="pre-acf" & yq<=acf_start_date ~ T,
-    acfarea=="b) ACF" & acftime=="acf" & yq>=acf_start_date & yq<=acf_end_date  ~ T))
+cnr_base_plot_micro_clinic <- plot_fx(cnrs_smp_clinic) +
+  labs(title="Smr/Xpert positive TB")
+cnr_base_plot_micro_clinic
+
+save(cnr_base_plot_micro_clinic, file=here("data/cnr_base_plot_micro_clinic.rdata")) # save both the .rdata object so can re-draw and add
+ggsave(plot=cnr_base_plot_micro_clinic, here("figures","cnr_base_plot_micro_clinic.pdf"), width=10, height=7) # and the pdf
+
+save(cnr_base_plot_all, file=here("data/cnr_base_plot_all.rdata")) # save 
+ggsave(plot=cnr_base_plot_all, file=here("figures","cnr_base_plot_all.pdf"), width=10, height=7)
 ```
 
-And plot the graph
+# Numbers quoted in text
 
-```{r}
-fig3a_woc <- cnr_base_plot_micro_clinic +
-  geom_line(aes(x=yq, y=pred, linetype="c'factual", color="b) ACF"), data=pred.woc.smp %>% filter(acfarea=="b) ACF", acftime=="pre-acf")) +
-  geom_ribbon(aes(x=yq, ymin=pred.low, ymax=pred.high, fill="b) ACF"), alpha=0.1, data=pred.woc.smp %>% filter(acfarea=="b) ACF", acftime=="pre-acf")) +
-    geom_line(aes(x=yq, y=pred, linetype="observed", color="b) ACF"), data=pred.woc.smp %>% filter(r==T)) +
-  geom_ribbon(aes(x=yq, ymin=pred.low, ymax=pred.high, fill="b) ACF"), alpha=0.1, data=pred.woc.smp %>% filter(r==T)) +
-  scale_linetype_manual(values=c(2,1)) +
-  scale_color_manual(values=c("#46ACC8","#B40F20","#E58601")) +
-  labs(color="Model A", caption="", title="") +
-  ylab("CNR: Facility micro. confirmed TB") +
-  guides(linetype=F, fill=F) +
-  ylim(c(0,420))
+Numbers quoted in text.
 
-fig3a_woc
+```{r, message=F}
+pop %>% filter(yq==dmy("01 Jan 2011"))
+tb_2009_2018 %>% nrow()
 
+tb_2009_2018 %>% tabyl(acf) %>% adorn_totals()
+tb_2009_2018 %>% tabyl(diagnosed) %>% adorn_totals()
 
-fig3b_woc <- cnr_base_plot_all +
-  geom_line(aes(x=yq, y=pred, linetype="c'factual", color="b) ACF"), data=pred.woc.allf %>% filter(acfarea=="b) ACF", acftime=="pre-acf")) +
-  geom_ribbon(aes(x=yq, ymin=pred.low, ymax=pred.high, fill="b) ACF"), alpha=0.1, data=pred.woc.allf %>% filter(acfarea=="b) ACF", acftime=="pre-acf")) +
-    geom_line(aes(x=yq, y=pred, linetype="observed", color="b) ACF"), data=pred.woc.allf %>% filter(r==T)) +
-  geom_ribbon(aes(x=yq, ymin=pred.low, ymax=pred.high, fill="b) ACF"), alpha=0.1, data=pred.woc.allf %>% filter(r==T)) +
-  scale_linetype_manual(values=c(2,1)) +
-  scale_color_manual(values=c("#46ACC8","#B40F20","#E58601")) +
-    labs(color="Model A", caption="", title="") +
-  ylab("CNR: All form TB") +
-  guides(linetype=F, fill=F) +
-  ylim(c(0,850))
+tb_2009_2018 %>% filter(diagnosed=="d) Smr clinic" | diagnosed=="c) Xpert clinic" | diagnosed=="e) Direct ACF") %>% nrow()
+(tb_2009_2018 %>% filter(diagnosed=="d) Smr clinic" | diagnosed=="c) Xpert clinic" | diagnosed=="e) Direct ACF") %>% nrow()) / nrow(tb_2009_2018)
 
-fig3b_woc
+tb_2009_2018 %>% filter(diagnosed=="a) Clinically dx" | diagnosed=="b) Smr/cult TB lab") %>% nrow()
+(tb_2009_2018 %>% filter(diagnosed=="a) Clinically dx" | diagnosed=="b) Smr/cult TB lab") %>% nrow()) / nrow(tb_2009_2018)
+
+tb_2011_2018 %>% tabyl(sex) %>% adorn_totals()
+tb_2011_2018 %>% tabyl(ageg) %>% adorn_totals()
+summary((tb_2011_2018 %>% filter(sex=="Female"))$age)
+summary((tb_2011_2018 %>% filter(sex=="Male"))$age)
+tb_2011_2018 %>% tabyl(hiv) %>% adorn_totals()
+
+pop %>% filter(yq==dmy("1 jan 2009"))
+pop %>% filter(yq==dmy("1 oct 2018"))
+
+cnrs_smp_clinic %>% 
+  group_by(acfarea,acftime) %>%
+  summarise(cnr=mean(cnr))
+
+cnrs_all  %>% 
+  group_by(acfarea,acftime) %>%
+  summarise(cnr=mean(cnr))
 ```
-## And with control group
+```{r, message=F}
+tb_2011_2018 %>% nrow()
+tb_2011_2018 %>% tabyl(diagnosed)
+7525 + 1816
 
-```{r}
-# com=0 is non-ACF
-tz <- seq(from=0, to=23, by=0.1)
-pop <-c(rep(seq(from=min(smp_c[acfarea=="a) Non-ACF"]$population), to=max(smp_c[acfarea=="a) Non-ACF"]$population), length.out = length(tz)), each=16),
-  rep(seq(from=min(smp_c[acfarea=="b) ACF"]$population), to=max(smp_c[acfarea=="b) ACF"]$population), length.out = length(tz)), each=16))
-yq <- rep(seq(from=min(smp_c$yq), to=max(smp_c$yq + months(3)), length.out = length(tz)), each=32)
-
-
-scaffold2 <- list(com=c(0,1),
-                  It=c(0,1),
-                  tz=tz,
-                  Itc=c(0,1),
-                  Ittzc=c(0,1),
-                  Ittz=c(0,1)) %>%
-  expand.grid() %>% as_tibble() %>%
-  mutate(Ittzc=Ittzc*tz) %>%
-  mutate(Ittz=Ittz*tz) %>%
-  arrange(com) %>%
-  mutate(population=pop) %>%
-  arrange(tz) %>%
-  mutate(yq=yq)
-
-pred.wc.smp <- predfx(scaffold2, mod.wc)
-pred.wc.allf <- predfx(scaffold2, mod.wc.allf)
-
-whichiswhich <- function(df){
-  df %>% mutate(which=case_when(
-    com==1 & tz<t1 & It==0 & Ittz==0 & Itc==0 & Ittzc==0 ~ "r+c",
-    com==1 & tz>t1 & It==1 & Ittz>t1 & Itc==1 & Ittzc>t1 ~ "r",
-    com==0 & tz<t1 & It==0 & Ittz==0 & Itc==0 & Ittzc==0 ~ "n",
-    com==0 & tz>t1 & It==1 & Ittz>t1 & Itc==0 & Ittzc==0 ~ "n",
-    com==1 & tz>t1 & It==1 & Ittz>t1 & Itc==0 & Ittzc==0 ~ "c",
-    )) 
+# This is about how many of those who were initially "smear neg" when starting TB treatment were subsequently micro confirmed by culture (by ACF area and ACF time - during ACF vs. post ACF).
+# My prefered 'tabyl' options (add totals, percentages)
+rmb_tabyl <- function(df) {
+ df %>% adorn_totals(where="col") %>% adorn_percentages(denominator="row") %>% adorn_pct_formatting(digits=2) %>% adorn_ns()
 }
 
-pred.wc.smp <- pred.wc.smp %>% whichiswhich()
-pred.wc.allf <- pred.wc.allf %>% whichiswhich()
+tb_2011_2018 %>% 
+  filter(yq>=dmy("01 April 2011")  & yq<dmy("01 Oct 2014")) %>% 
+  filter(diagnosed=="a) Clinically dx" | diagnosed=="b) Smr/cult TB lab") %>%
+  mutate(diagnosed=as.character(diagnosed)) %>%
+  tabyl(acfarea,diagnosed) %>% rmb_tabyl()
 
-fig3a_wc <- cnr_base_plot_micro_clinic +
-  geom_line(aes(x=yq, y=pred, linetype="real", color="b) ACF"), data=pred.wc.smp %>% filter(which=="r" | which=="r+c")) +
-  geom_line(aes(x=yq, y=pred, linetype="real", color="a) Non-ACF"), data=pred.wc.smp %>% filter(which=="n")) +
-  geom_line(aes(x=yq, y=pred, linetype="c'factual", color="c) c'factual"), data=pred.wc.smp %>% filter(which=="c" | which=="r+c")) +
-  geom_ribbon(aes(x=yq, ymin=pred.low, ymax=pred.high, fill="b) ACF"), alpha=0.2, data=pred.wc.smp %>% filter(which=="r" | which=="r+c")) +
-  geom_ribbon(aes(x=yq, ymin=pred.low, ymax=pred.high, fill="a) Non-ACF"), alpha=0.2, data=pred.wc.smp %>% filter(which=="n")) +
-  geom_ribbon(aes(x=yq, ymin=pred.low, ymax=pred.high, fill="c) c'factual"), alpha=0.2, data=pred.wc.smp %>% filter(which=="c" | which=="r+c")) +
-  scale_linetype_manual(values=c(2,1)) +
-  scale_color_manual(values=c("#46ACC8","#B40F20","#E58601")) +
-  scale_fill_manual(values=c("#46ACC8","#B40F20","#E58601")) +
-  labs(color="Model B", caption="", title="") +
-  ylab("CNR: Facility micro. confirmed TB") +
-  guides(linetype=F, fill=F) +
-  ylim(c(0,420))
+tb_2011_2018 %>% 
+  filter(yq>=dmy("01 April 2011")  & yq<dmy("01 Oct 2014")) %>% 
+  mutate(diagnosed=as.character(diagnosed)) %>%
+  filter(diagnosed=="a) Clinically dx" | diagnosed=="b) Smr/cult TB lab") %>%
+  tabyl(acfarea, diagnosed) %>% chisq.test(.,tabyl_results=T)
+tb_2009_2018 %>% 
+  filter(acfarea=="b) ACF") %>%
+  filter(yq>=dmy("01 April 2011")) %>% 
+  mutate(diagnosed=as.character(diagnosed)) %>%
+  filter(diagnosed=="a) Clinically dx" | diagnosed=="b) Smr/cult TB lab") %>%
+  tabyl(acftime,diagnosed) %>% rmb_tabyl()
 
-fig3a_wc
+tb_2009_2018 %>% 
+  filter(acfarea=="b) ACF") %>%
+  filter(yq>=dmy("01 April 2011")) %>% 
+  mutate(diagnosed=as.character(diagnosed)) %>%
+  mutate(acftime=as.character(acftime)) %>%
+  filter(diagnosed=="a) Clinically dx" | diagnosed=="b) Smr/cult TB lab") %>%
+  tabyl(acftime,diagnosed) %>% chisq.test()
+```
 
-fig3b_wc <- cnr_base_plot_all +
-  geom_line(aes(x=yq, y=pred, linetype="real", color="b) ACF"), data=pred.wc.allf %>% filter(which=="r" | which=="r+c")) +
-  geom_line(aes(x=yq, y=pred, linetype="real", color="a) Non-ACF"), data=pred.wc.allf %>% filter(which=="n")) +
-  geom_line(aes(x=yq, y=pred, linetype="c'factual", color="c) c'factual"), data=pred.wc.allf %>% filter(which=="c" | which=="r+c")) +
-  geom_ribbon(aes(x=yq, ymin=pred.low, ymax=pred.high, fill="b) ACF"), alpha=0.2, data=pred.wc.allf %>% filter(which=="r" | which=="r+c")) +
-  geom_ribbon(aes(x=yq, ymin=pred.low, ymax=pred.high, fill="a) Non-ACF"), alpha=0.2, data=pred.wc.allf %>% filter(which=="n")) +
-  geom_ribbon(aes(x=yq, ymin=pred.low, ymax=pred.high, fill="c) c'factual"), alpha=0.2, data=pred.wc.allf %>% filter(which=="c" | which=="r+c")) +
-  scale_linetype_manual(values=c(2,1)) +
-  scale_color_manual(values=c("#46ACC8","#B40F20","#E58601")) +
-  scale_fill_manual(values=c("#46ACC8","#B40F20","#E58601")) +
-  labs(color="Model B", caption="", title="") +
-  ylab("CNR: All form TB") +
-  guides(linetype=F, fill=F) +
-  ylim(c(0,850))
 
-fig3b_wc
+# S. table
+
+Supplementary table numbers (NB. for publication quality output I have re-done this in a dedicated markdown that I could knit to pdf, code here is to display the values in a less "polished" way).
+
+```{r,asis=T}
+mycontrols  <- tableby.control(test=FALSE)
+
+# Table 1A is pre-ACF (data collected retrospectively)
+labels(tb_2009_2010) <- c(diagnosed = "TB type")
+
+Stab1A <- tableby(acf ~ diagnosed, data=tb_2009_2010, control=mycontrols)
+summary(Stab1A, title="People with TB 2009-2011.Q1", text=T)
+
+# Table 1B is ACF and post-ACF time (data collected prospectively)
+tb_2011_2018b <- tb_2011_2018 %>% mutate(ageg=as.character(ageg)) # this is to get rid of "empty" 0-14 factor
+labels(tb_2011_2018b)  <- c(ageg = 'Age (years)', sex = "Sex", diagnosed = "TB type", Facility = "Type of Facility", hiv="HIV Status", art = "ART status")
+Stab1B <- tableby(acf ~ sex + diagnosed + facility + hiv + art + ageg, data=tb_2011_2018b, control=mycontrols)
+summary(Stab1B, title="People with TB 2011.Q2-2018", text=T) 
+
+Stab <- list(Stab1A, Stab1B)
+
+#write2word(Stab, here("test2.docx"), title="Characteristics of people with TB")
 
 ```
 
-Save these four
 
-```{r}
-ggsave(plot=fig3a_woc, here("figures","fig3a_woc.pdf"), width=7, height=4)
-ggsave(plot=fig3b_woc, here("figures","fig3b_woc.pdf"),width=7, height=4)
-
-ggsave(plot=fig3a_wc, here("figures","fig3a_wc.pdf"), width=7, height=4)
-ggsave(plot=fig3b_wc, here("figures","fig3b_wc.pdf"), width=7, height=4)
-
-
-
-```
 
 
