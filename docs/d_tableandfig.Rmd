@@ -190,9 +190,13 @@ Save these four
 ```{r}
 ggsave(plot=fig3a_woc, here("figures","fig3a_woc.pdf"), width=7, height=4)
 ggsave(plot=fig3b_woc, here("figures","fig3b_woc.pdf"),width=7, height=4)
-
 ggsave(plot=fig3a_wc, here("figures","fig3a_wc.pdf"), width=7, height=4)
 ggsave(plot=fig3b_wc, here("figures","fig3b_wc.pdf"), width=7, height=4)
+
+saveRDS(fig3a_woc, here("data","fig3a_woc.rdata"))
+saveRDS(fig3b_woc, here("data","fig3b_woc.rdata"))
+saveRDS(fig3a_wc, here("data","fig3a_wc.rdata"))
+saveRDS(fig3b_wc, here("data","fig3b_wc.rdata"))
 
 
 
