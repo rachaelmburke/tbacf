@@ -2083,7 +2083,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     background-color: #00b7a7;
     font-size: 17px;
       color:  #000000;
-    padding: 21px 0px;
+    padding: 20px 0px;
   }
   </style>
   <!--/radix_placeholder_site_in_header-->
@@ -2144,6 +2144,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <li><p>C Analysis: Runs models for predicting “real” vs. counterfactual [no ACF] scenarios, the difference and the CI of the difference. For details see the paper. Briefly there is a “without control” (“woc”) set of models looking at time trends only within the ACF areas, and a “with control” (“wc”) that compares trends in ACF areas with pre-ACF trends <em>and</em> trends in non-ACF areas. For each set of models we consider Bac+ and all form TB seperately. We calculate sum of difference in cases between observed v. counterfactual, and the difference in mean CNR. We use delta method to calculate CIs of these differences. See paper, and in particular appendix for more information. Appendix is in “files” folder in main repo.</p></li>
 <li><p>D Tables and Figs: Draws graphs of predictions from all models (for figure 3 in paper.)</p></li>
 </ul>
+<p>Final NB: This website is made with “distill” and github (wonderful - thank you! See <a href="https://rstudio4edu.github.io/rstudio4edu-book/intro-distill.html" class="uri">https://rstudio4edu.github.io/rstudio4edu-book/intro-distill.html</a>). I know some of the annotation in code chunks is cut off on most web-browers and I don’t think distill supports adding horiztonal scroll or making code much smaller. All details can be see in the R markdown files on the repo, or (as a work around) if you go to the site on a mobile webbrowser, horziontal scrolling is implemented and you can see the full width of the lines.</p>
 <p>This work is licensed under a <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.</p>
 <p><a href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png" alt="CC BY-NC-SA 4.0" /></a></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
