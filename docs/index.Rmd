@@ -1,7 +1,7 @@
 ---
 title: "TB ACF"
 description: |
-  A website to share code and data from our paper about effects of ACF on TB notications in Blantyre
+  A website to share code and data from our paper about effects of ACF on TB notifications in Blantyre
 site: distill::distill_website
 ---
 

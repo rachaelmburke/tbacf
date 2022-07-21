@@ -8,3 +8,4 @@ data_raw/**
 data
 data/
 data/**
+.DS_Store
