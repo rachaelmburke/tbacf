@@ -26,6 +26,8 @@ Documents:
   * C Analysis: Runs models for predicting "real" vs. counterfactual [no ACF] scenarios, the difference and the CI of the difference.  For details see the paper.  Briefly there is a "without control" ("woc") set of models looking at time trends only within the ACF areas, and a "with control" ("wc") that compares trends in ACF areas with pre-ACF trends *and* trends in non-ACF areas.  For each set of models we consider Bac+ and all form TB seperately.  We calculate sum of difference in cases between observed v. counterfactual, and the difference in mean CNR.  We use delta method to calculate CIs of these differences.  See paper, and in particular appendix for more information.  Appendix is in "files" folder in main repo.
   
   * D Tables and Figs: Draws graphs of predictions from all models (for figure 3 in paper.)
+
+Final NB: This website is made with "distill" and github (wonderful - thank you! See https://rstudio4edu.github.io/rstudio4edu-book/intro-distill.html).  I know some of the annotation in code chunks is cut off on most web-browers and I don't think distill supports adding horiztonal scroll or making code much smaller. All details can be see in the R markdown files on the repo, or (as a work around) if you go to the site on a mobile webbrowser, horziontal scrolling is implemented and you can see the full width of the lines.
   
 This work is licensed under a
 [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-nc-sa].
